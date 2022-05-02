@@ -4,6 +4,7 @@ html {
     font-family: sans-serif;
     background-color: #282c34;
     color: white;
+    padding: 2rem;
 }
 
 *,
@@ -11,14 +12,29 @@ html {
 *::before {
     box-sizing: inherit;
 }
+
+a {
+    color: lightskyblue;
+    text-decoration: none;
+    padding: 0 0.5rem;
+}
+
+.active {
+    color: lightyellow;
+    font-weight: bold;
+}
+
 h1 {
     color: skyblue;
 }
 
 h1,
-h2,
-h3 {
+h2 {
     text-align: center;
+}
+
+header {
+    padding: 2rem;
 }
 
 input[type='text'],
@@ -48,6 +64,7 @@ textarea {
 
 button,
 input[type='submit'],
+input[type='button'],
 input[type='reset'] {
     border: thin solid #444;
     border-radius: 0.25rem;
@@ -68,6 +85,13 @@ input[type='reset'] {
     text-align: center;
     vertical-align: middle;
     cursor: pointer;
+}
+
+input[type='button']:disabled {
+    border-color: rgba(118, 118, 118, 0.3);
+    color: rgba(16, 16, 16, 0.3);
+    background-color: rgba(239, 239, 239, 0.3);
+    cursor: default;
 }
 
 form {

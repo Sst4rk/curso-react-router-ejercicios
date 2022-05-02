@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { NavLink, Outlet, Routes, Route } from 'react-router-dom';
 import { helpHttp } from '../helpers/helpHttp';
 import CrudForm from './CrudForm';
 import CrudTable from './CrudTable';
 import Loader from './Loader';
 import Menssaje from './Message';
 
-const CrudApi = () => {
+const CrudApi = ({ basePath = '/santos' }) => {
     const [db, setDb] = useState(null);
     const [dataToEdit, setDataToEdit] = useState(null);
     const [error, setError] = useState(null);
@@ -53,7 +54,6 @@ const CrudApi = () => {
         });
     };
 
-
     const updateData = (data) => {
         let endpoint = `${url}/${data.id}`;
 
@@ -99,31 +99,65 @@ const CrudApi = () => {
 
     return (
         <div className="crudApp">
-            <h2>CRUD API</h2>
-            <article className="grid-1-2">
-                <CrudForm
-                    createData={createData}
-                    updateData={updateData}
-                    dataToEdit={dataToEdit}
-                    setDataToEdit={setDataToEdit}
+            <header>
+                <h2>CRUD API con Rutas</h2>
+                <nav>
+                    <NavLink to="/">Home</NavLink>
+                    <NavLink to={basePath}>Santos</NavLink>
+                    <NavLink to={`${basePath}/agregar`}>Agregar</NavLink>
+                </nav>
+            </header>
+
+            <Routes>
+                <Route
+                    path=""
+                    element={
+                        <>
+                            {loading && <Loader />}
+                            {error && (
+                                <Menssaje
+                                    msg={`Error ${error.status}:${error.statusText}`}
+                                    bgColor="#dc3545"
+                                />
+                            )}
+
+                            {db && (
+                                <CrudTable
+                                    data={db}
+                                    setDataToEdit={setDataToEdit}
+                                    deleteData={deleteData}
+                                />
+                            )}
+                        </>
+                    }
+                />
+                <Route
+                    path="agregar"
+                    element={
+                        <CrudForm
+                            createData={createData}
+                            updateData={updateData}
+                            dataToEdit={dataToEdit}
+                            setDataToEdit={setDataToEdit}
+                        />
+                    }
+                />
+                <Route
+                    path="editar/:id"
+                    element={
+                        <CrudForm
+                            createData={createData}
+                            updateData={updateData}
+                            dataToEdit={dataToEdit}
+                            setDataToEdit={setDataToEdit}
+                        />
+                    }
                 />
 
-                {loading && <Loader />}
-                {error && (
-                    <Menssaje
-                        msg={`Error ${error.status}:${error.statusText}`}
-                        bgColor="#dc3545"
-                    />
-                )}
-
-                {db && (
-                    <CrudTable
-                        data={db}
-                        setDataToEdit={setDataToEdit}
-                        deleteData={deleteData}
-                    />
-                )}
-            </article>
+                <Route path="*" element={<h2>404</h2>} />
+            </Routes>
+            {/* <Outlet /> */}
+            {/* crear */}
         </div>
     );
 };
